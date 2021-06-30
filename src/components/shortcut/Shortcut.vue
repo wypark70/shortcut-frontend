@@ -36,10 +36,10 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item  @click="editShortcut(index)">
+          <v-list-item @click="editShortcut(index)">
             <v-list-item-title>Edit</v-list-item-title>
           </v-list-item>
-          <v-list-item  @click="deleteShortcut(index)">
+          <v-list-item @click="deleteShortcut(index)">
             <v-list-item-title>Delete</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -153,14 +153,17 @@ export default {
     async save() {
       if (this.selectedIndex > -1) {
         // modify
-        const {id, name, url } = this.selectedShortcut;
+        const {id, name, url} = this.selectedShortcut;
         await axios.put(`${SHORT_REST_URL}/userName/admin/id/${id}/name/${name}/url/${url}`).then((res) => {
           console.log(res.data);
         });
       } else {
         // add
-        const { name, url } = this.selectedShortcut;
-        await axios.post(`${SHORT_REST_URL}/userName/admin/name/${name}/url/${url}`).then((res) => {
+        const {name, url} = this.selectedShortcut;
+        await axios.post(
+            `${SHORT_REST_URL}/userName/admin/name/${name}/url/${url}`,
+            {},
+            { headers: {"X-Atlassian-Token": "no-check" }}).then((res) => {
           console.log(res.data);
         });
       }

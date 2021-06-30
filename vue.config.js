@@ -50,7 +50,7 @@ module.exports = {
   },
   transpileDependencies: ["vuetify"],
   publicPath: "/",
-  outputDir: path.resolve(__dirname, "../resources/client"),
+  outputDir: path.resolve(__dirname, "../shortcut-backend/src/main/resources/client"),
   /*
   chainWebpack: config => {
     if(config.plugins.has('extract-css')) {
