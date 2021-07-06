@@ -67,7 +67,7 @@
           <span class="text-h5">{{ dialogMode.toUpperCase() }} Shortcut</span>
         </v-card-title>
         <v-card-text>
-          <v-form v-model="valid">
+          <v-form ref="form" v-model="valid">
             <v-text-field
                 v-model="selectedShortcut.name"
                 label="Name"
@@ -128,10 +128,15 @@ export default {
     console.log("mounted!!!");
     this.getShortcuts("mounted!!!");
   },
+  watch: {
+    dialog() {
+      this.$refs.form.reset()
+    }
+  },
   methods: {
     getShortcuts(str) {
       console.log(str);
-      axios.get(`${SHORT_REST_URL}/userName/admin`).then((res) => {
+      axios.get(`${SHORT_REST_URL}`).then((res) => {
         console.log("res.data:", res.data);
         this.shortcuts = [];
         res.data.forEach((item) => {
@@ -154,14 +159,14 @@ export default {
       if (this.selectedIndex > -1) {
         // modify
         const {id, name, url} = this.selectedShortcut;
-        await axios.put(`${SHORT_REST_URL}/userName/admin/id/${id}/name/${name}/url/${url}`).then((res) => {
+        await axios.put(`${SHORT_REST_URL}/id/${id}/name/${name}/url/${url}`).then((res) => {
           console.log(res.data);
         });
       } else {
         // add
         const {name, url} = this.selectedShortcut;
         await axios.post(
-            `${SHORT_REST_URL}/userName/admin/name/${name}/url/${url}`,
+            `${SHORT_REST_URL}/name/${name}/url/${url}`,
             {},
             { headers: {"X-Atlassian-Token": "no-check" }}).then((res) => {
           console.log(res.data);
@@ -191,7 +196,7 @@ export default {
     },
     async deleteShortcut(index) {
       const id = this.shortcuts[index].id;
-      await axios.delete(`${SHORT_REST_URL}/userName/admin/id/${id}`).then((res) => {
+      await axios.delete(`${SHORT_REST_URL}/id/${id}`).then((res) => {
         console.log(res.data);
       });
       this.getShortcuts("Click delete menu !!!");
