@@ -130,7 +130,9 @@ export default {
   },
   watch: {
     dialog() {
-      this.$refs.form.reset()
+      this.$nextTick(() => {
+        this.$refs.form.reset();
+      });
     }
   },
   methods: {
@@ -168,7 +170,7 @@ export default {
         await axios.post(
             `${SHORT_REST_URL}/name/${name}/url/${url}`,
             {},
-            { headers: {"X-Atlassian-Token": "no-check" }}).then((res) => {
+            {headers: {"X-Atlassian-Token": "no-check"}}).then((res) => {
           console.log(res.data);
         });
       }
